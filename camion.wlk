@@ -2,6 +2,7 @@ import cosas.*
 
 object camion {
 	const property cosas = #{}
+	const tara = 1000
 		
 	method cargar(unaCosa) {
 		cosas.add(unaCosa)
@@ -23,18 +24,23 @@ object camion {
 	}
 
 	method todoPesoPar() {
-	  return cosas.all({cosa => cosa.pesoEsPar()})
+	  return cosas.all({cosa => cosa.peso().even()})
 	}
 
 	method hayAlgunoQuePesa(peso) {
-	  return cosas.any({cosa => cosa.pesoEsIgualAlDado(peso)})
+	  return cosas.any({cosa => cosa.peso() == peso})
 	}
 	method elDeNivel(nivel){
-	  
+	  return cosas
 	}
+
 	method pesoTotal(){
-	  return cosas.sum({cosa => cosa.peso()})
+	  return self.pesoDeCarga() + tara
 	}
+
+	method pesoDeCarga(){
+	  return cosas.sum({cosa => cosa.peso()}) 
+	} 
 
 	method excedidoDePeso(){
 		return self.pesoTotal() > 2500
@@ -50,7 +56,7 @@ object camion {
 
 	method puedeCircularEnRuta(nivelMaximoPeligrosidad){
 		return (not self.excedidoDePeso() and 
-		not self.cargaSuperaPeligrosidad(nivelMaximoPeligrosidad))
+		 self.cargaSuperaPeligrosidad(nivelMaximoPeligrosidad))
 	}
 
 	method cargaSuperaPeligrosidad(nivelMaximoPeligrosidad){

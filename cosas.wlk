@@ -10,10 +10,10 @@ object knightRider {
 		return self.peso() % 2 == 0 
 	} 
 	
-	method pesoEsIgualAlDado(peso){
+/*	method pesoEsIgualAlDado(peso){
 		return self.peso() == peso
 	} 
-	 
+	 */
 }
 
 object bumblebee {
