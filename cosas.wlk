@@ -1,173 +1,204 @@
 object knightRider {
-	
+	var property bulto = 1  
+
 	method peso() {
-		 return 300 }
+			return 300 
+			}
 
 	method nivelPeligrosidad() {
-		 return 10 }
-
-	method pesoEsPar(){
+			return 10 
+			}
+//Esto puede ser que lo tenga que hacer el obj pero simplifico con la funcion en camion
+	/*method pesoEsPar(){
 		return self.peso() % 2 == 0 
-	} 
+	} */
 	
-/*	method pesoEsIgualAlDado(peso){
-		return self.peso() == peso
-	} 
-	 */
+	method bulto() {
+		return bulto
+	}
+
+	method cambiosAlCargar(){
+		//No hace nada
+	}
+
 }
 
 object bumblebee {
 var property estado = auto
+var property bulto = 2
+	
 	method peso() {
-	  return 300
+		return 300
 	}
 
 	method nivelPeligrosidad() {
-	  estado.nivelPeligrosidad()
+		estado.nivelPeligrosidad()
 	}
+	method bulto() {
+		return bulto
+	}	
 
-	method pesoEsPar(){
-		return self.peso() % 2 == 0 
-	} 
+	method cambiosAlCargar(){
+		self.estado(robot)
 
-	method pesoEsIgualAlDado(peso){
-		return self.peso() == peso
-	} 
-
+	}
 
 }
 
 object auto {
 
 	method nivelPeligrosidad() {
-	  return 15
+		return 15
 	}
+
+	
 }
 
 object robot {
 	method nivelPeligrosidad() {
-	  return 30
+		return 30
 	}
 }
 
 object paqueteLadrillos {
 var property cant  = 0
 const pesoLadrillo = 2
+var property bulto = 0
+var property agregadoAlCargar =12 
 
 	method peso() {
   		return cant * pesoLadrillo
 }
 
 	method nivelPeligrosidad() {
-  		return cant
+		return cant
 }
+	method bulto() {
+		return 	if(cant <= 100 ) self.bulto(1) 
+				if (cant <= 300 ) self.bulto(2) 
+				else self.bulto(3)
+	}
 
-	method pesoEsPar(){
-		return self.peso() % 2 == 0 
-	} 
-
-	method pesoEsIgualAlDado(peso){
-		return self.peso() == peso
-	} 
-
+	method cambiosAlCargar(){
+		cant =+ agregadoAlCargar
+	}
 }
 
 object arenaGranel {
-  
-  method peso() {
-	return
-  }
-
-  method nivelPeligrosidad() {
-	return 1
-  }
-
-   method pesoEsPar(){
-		return self.peso() % 2 == 0 
+var property pesoArena = 100 
+var property bulto = 1
+var property agregadoAlCargar = 20 
+	
+	method peso() {
+	return pesoArena
 	}
 
-	method pesoEsIgualAlDado(peso){
-		return self.peso() == peso
-	}  
+	method nivelPeligrosidad() {
+	return 1
+	}
+
+	method bulto() {
+		return bulto
+	}
+
+	method cambiosAlCargar(){
+		pesoArena =+ agregadoAlCargar
+	}
 	
 }
 
 object bateria {
-  
-  method peso() {
-	return
-  }
+var property tieneMisiles = true 
+var property bulto = 0
 
-  method nivelPeligrosidad() {
-	
-  }
-  
-  method pesoEsPar(){
-	return self.peso() % 2 == 0 
-	} 
-
-  method pesoEsIgualAlDado(peso){
-		return self.peso() == peso
-	} 
-
-}
-
-object misiles {
-  
-}
-
-object contenedor {
-	
 	method peso() {
-	  return 
+		return if (tieneMisiles) 300 else 200
 	}
 
 	method nivelPeligrosidad() {
-	  return 
+		return if (tieneMisiles) 100 else 0
 	}
 
-	method pesoEsPar(){
-		return self.peso() % 2 == 0 
-	} 
+	method bulto() {
+		return if(tieneMisiles) self.bulto(1) else  self.bulto(2)
+	}
 
-	method pesoEsIgualAlDado(peso){
-		return self.peso() == peso
-	} 
+	method cambiosAlCargar(){
+		self.tieneMisiles(true)
+	}
+
+}
+
+
+
+object contenedor {
+var property cosasEnContenedor = #{} 
+var property bulto = cosasEnContenedor.sum({cosa => cosa.bulto()})
+const cosaMasPeligrosa = cosasEnContenedor.max({cosa=> cosa.nivelPeligrosidad()})
+	
+	method peso() {
+		return 100 + self.pesoDeCosasDentro()
+	}
+
+	method pesoDeCosasDentro() {
+		return cosasEnContenedor.sum({cosa => cosa.peso()})
+	}
+
+	method nivelPeligrosidad() {
+		return if (cosasEnContenedor.isEmpty()) 0 else cosaMasPeligrosa.nivelPeligrosidad()
+	}
+
+	method bulto() {
+		return bulto + 1
+	}
+
+	method cambiosAlCargar(){
+		cosasEnContenedor.forEach({cosa =>cosa.cambiosAlCargar()})
+	}
 
 }
 
 object residuos {
-  	method peso() {
-	  return 
+var property pesoResiduos = 0 
+var property bulto = 1
+var property agregadosAlCargar = 15 
+
+	method peso() {
+		return pesoResiduos
 	}
 
 	method nivelPeligrosidad() {
-	  return 
+		return  200
 	}
-	
-	method pesoEsPar(){
-		return self.peso() % 2 == 0 
-	} 
 
-	method pesoEsIgualAlDado(peso){
-		return self.peso() == peso
-	} 
+	method bulto() {
+		return bulto
+	}	
+
+	method cambiosAlCargar(){
+		pesoResiduos =+ agregadosAlCargar
+	}
+
 }
 
 object embalaje {
-  	method peso() {
-	  return 
+var property cosaEmbalada = bumblebee 
+var property bulto = 2
+
+	method peso() {
+		return cosaEmbalada.peso()
 	}
 
 	method nivelPeligrosidad() {
-	  return 
+		return cosaEmbalada.nivelPeligrosidad() / 2
 	}
 
-	method pesoEsPar(){
-		return self.peso() % 2 == 0 
-	} 
-	method pesoEsIgualAlDado(peso){
-		return self.peso() == peso
-	} 
+	method bulto() {
+		return bulto
+	}
+
+	method cambiosAlCargar(){
+		//No hace nada
+	}
 
 }
